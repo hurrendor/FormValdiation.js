@@ -1,8 +1,9 @@
 // FORM CHECK VALIDATE, PREVENT DEFAULT, SEND MAIL
 $('input[type=submit]').click(function(ev){
-    console.log('ya');
+  //Replace Location Direction
+    var redirectLocation = "https://www.google.com/";
     var botField = $('input[name=botField]').val();
-    ev.preventDefault(); 
+    ev.preventDefault();
     var post_data = {
         firstName : $('input[name=firstName]').val(),
         lastName : $('input[name=lastName]').val(),
@@ -12,29 +13,28 @@ $('input[type=submit]').click(function(ev){
     };//end post_data
 
 
-    var invalidCount = 0;
-    var emptyCount = 0;
+    var invalidCount, emptyCount;
     var inputs = [$('input[name=firstName]'), $('input[name=lastName]'), $('input[name=email]')];
-    
+
 //ensure no fields are blank loop
     for(i = 0; i < inputs.length; i++){
-        var input = inputs[i].val();    
+        var input = inputs[i].val();
         if(input === ""){
             //checks if the warning is already there
             if(!$('#notFilled').length ){
-                $('#form-feedback').append('<p id="notFilled" class="feedback">Please fill out all fields.</p>'); 
+                $('#form-feedback').append('<p id="notFilled" class="feedback">Please fill out all fields.</p>');
             }
-            emptyCount++; 
+            emptyCount++;
         } else { //removes warning
             if( emptyCount === 0 ){
                 $('#notFilled').remove();
             }
-        }       
+        }
     }
-   //Character Set Warning Message 
+   //Character Set Warning Message
     var charWarning = '<p id="charset" class="feedback">Special characters not allowed</p>';
-    
-//text input validation    
+
+//text input validation
     var textInputs = [$('input[name=firstName]'), $('input[name=lastName]')];
     for(b = 0; b < textInputs.length; b++){
         var textInput = textInputs[b].val();
@@ -44,7 +44,7 @@ $('input[type=submit]').click(function(ev){
                 if(!$('#charset').length ){
                     console.log('charset');
                     $('#form-feedback').append(charWarning);
-                }//end if present    
+                }//end if present
             }else{ //removes error statements/styling if error-free
                 if( invalidCount < 1 ){
                    $('#charset').remove();
@@ -52,8 +52,8 @@ $('input[type=submit]').click(function(ev){
             $(textInputs[b]).removeClass('error');
         }
     }//end for
-    
-    
+
+
 //e-mail input validation
     var eInput = $('input[name=email]').val();
     if(/^[a-zA-Z0-9-@.]*$/.test(eInput) === false ){
@@ -64,7 +64,7 @@ $('input[type=submit]').click(function(ev){
             //tests if warning is already present
             if(!$('#charset').length ){
                 $('#form-feedback').append(charWarning);
-            }//end if present    
+            }//end if present
         }else{ //removes error statements/styling if error-free
             if( invalidCount < 1 ){
                $('#charset').remove();
@@ -89,7 +89,7 @@ $('input[type=submit]').click(function(ev){
             }
         $('input[name=phone]').removeClass('error');
     }
-    
+
 //checkbox input validation
     var checkbox = $('input:checked').length;
     //Checks if checkbox checked
@@ -108,7 +108,6 @@ $('input[type=submit]').click(function(ev){
     }
 
     if(invalidCount < 1 && emptyCount < 1 && checkbox < 1){
-        console.log('Empty count');
         $.ajax({
             type: 'POST',
             //change name of processor php file if necessary
@@ -117,15 +116,15 @@ $('input[type=submit]').click(function(ev){
             success: function(){
                 //honeypot method - checks if botField filled out
                 if(botField === ''){
-                
+
                     $('form').fadeOut(500);
                     $('form').after('<h2 id="thanks" style="display:hidden;">Thanks! We\'ll contact you soon.</h2>');
                     $('#thanks').fadeIn(700);
                 }else{
-                    window.location.replace('http://google.com');
+                    window.location.replace(redirectLocation);
                 }//botField
             }
         });//end ajax
         return false;
     }//end if valid
-});//end form submit  
+});//end form submit
