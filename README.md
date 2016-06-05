@@ -12,7 +12,3 @@ input types:
 HTML Necessary:
 	div#form-feedback inside the form
 	Matching input names
-CSS Classes and IDs:
-	.error
-	#charset, #notFilled, #fillCheck 		(warning message)
-	#thanks						(success message)
