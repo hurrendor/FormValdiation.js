@@ -4,6 +4,7 @@ $('input[type=submit]').click(function(ev){
     var redirectLocation = "https://www.google.com/";
     var botField = $('input[name=botField]').val();
     ev.preventDefault();
+    //post data sent
     var post_data = {
         firstName : $('input[name=firstName]').val(),
         lastName : $('input[name=lastName]').val(),
@@ -42,7 +43,6 @@ $('input[type=submit]').click(function(ev){
             $(textInputs[b]).addClass('error');
             invalidCount++;
                 if(!$('#charset').length ){
-                    console.log('charset');
                     $('#form-feedback').append(charWarning);
                 }//end if present
             }else{ //removes error statements/styling if error-free

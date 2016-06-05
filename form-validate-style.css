@@ -1,0 +1,25 @@
+/**suggested styling for formValidation.js elements**/
+.error {
+  border:1px solid red;
+}
+#charset,
+#notFilled,
+#fillCheck {
+  font-weight:700;
+  color:red;
+}
+#thanks {
+  font-weight:700;
+  color:green;
+}
+
+
+/**Example Form Styling**/
+#form-feedback {
+  display:block;
+  height:2em;
+}
+label,
+input {
+  display:block;
+}
