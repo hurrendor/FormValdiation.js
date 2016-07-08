@@ -1,9 +1,10 @@
 // FORM CHECK VALIDATE, PREVENT DEFAULT, SEND MAIL
+//global variable setup
+var inputs = [$('input[name=firstName]'), $('input[name=lastName]'), $('input[name=email]')];
 //check form as typing/onfocus
 $('form input').on('focus, keydown', function(){
   //variable setup
    var invalidCount, emptyCount;
-   var inputs = [$('input[name=firstName]'), $('input[name=lastName]'), $('input[name=email]')];
    //Character Set Warning Message
    var charWarning = '<p id="charset" class="feedback">Special characters not allowed</p>';
 
