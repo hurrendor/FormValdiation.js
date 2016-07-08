@@ -1,4 +1,66 @@
 // FORM CHECK VALIDATE, PREVENT DEFAULT, SEND MAIL
+//check form as typing/onfocus
+$('form input').on('focus, keydown', function(){
+  //variable setup
+   var invalidCount, emptyCount;
+   var inputs = [$('input[name=firstName]'), $('input[name=lastName]'), $('input[name=email]')];
+   //Character Set Warning Message
+   var charWarning = '<p id="charset" class="feedback">Special characters not allowed</p>';
+
+  //text input validation
+  var textInputs = [$('input[name=firstName]'), $('input[name=lastName]')];
+  for(b = 0; b < textInputs.length; b++){
+      var textInput = textInputs[b].val();
+      if(/^[a-zA-Z0-9- ]*$/.test(textInput) === false) {
+          $(textInputs[b]).addClass('error');
+          invalidCount++;
+              if(!$('#charset').length ){
+                  $('#form-feedback').append(charWarning);
+              }//end if present
+          }else{ //removes error statements/styling if error-free
+              if( invalidCount < 1 ){
+                 $('#charset').remove();
+              }
+          $(textInputs[b]).removeClass('error');
+      }
+  }//end for
+
+  //e-mail input validation
+  var eInput = $('input[name=email]').val();
+  if(/^[a-zA-Z0-9-@.]*$/.test(eInput) === false ){
+   $('input[name=email]').addClass('error');
+
+      //tests how many are coming up false validity
+      invalidCount++;
+          //tests if warning is already present
+          if(!$('#charset').length ){
+              $('#form-feedback').append(charWarning);
+          }//end if present
+      }else{ //removes error statements/styling if error-free
+          if( invalidCount < 1 ){
+             $('#charset').remove();
+          }
+      $('input[name=email]').removeClass('error');
+  }
+
+  //number input validation
+  var numInput = $('input[name=phone]').val();
+  if(/^[0-9-]*$/.test(numInput) === false){
+      $('input[name=phone]').addClass('error');
+      invalidCount++;
+      if(!$('#charset').length ){
+          $('#form-feedback').append(charWarning);
+      }
+  }else{ //removes error statements/styling if error-free
+      if( invalidCount < 1 ){
+             $('#charset').remove();
+          }
+      $('input[name=phone]').removeClass('error');
+  }
+});
+
+
+//FORM SUBMISSION CHECKING
 $('input[type=submit]').click(function(ev){
   //Replace Location Direction
     var redirectLocation = "https://www.google.com/";
@@ -13,9 +75,22 @@ $('input[type=submit]').click(function(ev){
         checkbox : $('input[name=checkbox]').val()
     };//end post_data
 
-
-    var invalidCount, emptyCount;
-    var inputs = [$('input[name=firstName]'), $('input[name=lastName]'), $('input[name=email]')];
+    //checkbox input validation
+    var checkbox = $('input:checked').length;
+    //Checks if checkbox checked
+    if(checkbox < 1) {
+        $('input[name=termsCheck]').addClass('error');
+        //checks if warning already present
+        if(!$('#fillCheck').length ){
+            $('#form-feedback').append('<p id="fillCheck" class="feedback">Please confirm you have read the terms of agreement.</p>');
+        }
+        //changes color of border
+    } else { //removes error statements/styling if error-free
+        if( $('#fillCheck').length ){
+            $('#fillCheck').remove();
+        }
+        $('input[name=termsCheck]').removeClass('error');
+    }
 
 //ensure no fields are blank loop
     for(i = 0; i < inputs.length; i++){
@@ -32,80 +107,8 @@ $('input[type=submit]').click(function(ev){
             }
         }
     }
-   //Character Set Warning Message
-    var charWarning = '<p id="charset" class="feedback">Special characters not allowed</p>';
-
-//text input validation
-    var textInputs = [$('input[name=firstName]'), $('input[name=lastName]')];
-    for(b = 0; b < textInputs.length; b++){
-        var textInput = textInputs[b].val();
-        if(/^[a-zA-Z0-9- ]*$/.test(textInput) === false) {
-            $(textInputs[b]).addClass('error');
-            invalidCount++;
-                if(!$('#charset').length ){
-                    $('#form-feedback').append(charWarning);
-                }//end if present
-            }else{ //removes error statements/styling if error-free
-                if( invalidCount < 1 ){
-                   $('#charset').remove();
-                }
-            $(textInputs[b]).removeClass('error');
-        }
-    }//end for
 
 
-//e-mail input validation
-    var eInput = $('input[name=email]').val();
-    if(/^[a-zA-Z0-9-@.]*$/.test(eInput) === false ){
-     $('input[name=email]').addClass('error');
-
-        //tests how many are coming up false validity
-        invalidCount++;
-            //tests if warning is already present
-            if(!$('#charset').length ){
-                $('#form-feedback').append(charWarning);
-            }//end if present
-        }else{ //removes error statements/styling if error-free
-            if( invalidCount < 1 ){
-               $('#charset').remove();
-            }
-        $('input[name=email]').removeClass('error');
-    }
-
-
-
-
-//number input validation
-    var numInput = $('input[name=phone]').val();
-    if(/^[0-9-]*$/.test(numInput) === false){
-        $('input[name=phone]').addClass('error');
-        invalidCount++;
-        if(!$('#charset').length ){
-            $('#form-feedback').append(charWarning);
-        }
-    }else{ //removes error statements/styling if error-free
-        if( invalidCount < 1 ){
-               $('#charset').remove();
-            }
-        $('input[name=phone]').removeClass('error');
-    }
-
-//checkbox input validation
-    var checkbox = $('input:checked').length;
-    //Checks if checkbox checked
-    if(checkbox < 1) {
-        $('input[name=termsCheck]').addClass('error');
-        //checks if warning already present
-        if(!$('#fillCheck').length ){
-            $('#form-feedback').append('<p id="fillCheck" class="feedback">Please confirm you have read the terms of agreement.</p>');
-        }
-        //changes color of border
-    } else { //removes error statements/styling if error-free
-        if( $('#fillCheck').length ){
-            $('#fillCheck').remove();
-        }
-        $('input[name=termsCheck]').removeClass('error');
-    }
 
     if(invalidCount < 1 && emptyCount < 1 && checkbox < 1){
         $.ajax({
